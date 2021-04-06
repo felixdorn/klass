@@ -1,8 +1,7 @@
 <?php
 
-use Felix\TailwindClassExtractor\BladeComponentCall;
-use Felix\TailwindClassExtractor\Extractor;
-use Illuminate\View\ComponentAttributeBag;
+use Felix\TailwindClassExtractor\Extractor\BladeComponentCall;
+use Felix\TailwindClassExtractor\Extractor\Extractor;
 
 beforeEach(function () {
     $this->extractor = new Extractor();
@@ -12,9 +11,7 @@ it('can extract a self closing component', function () {
     $extracted = $this->extractor->extract('<x-tests-background color="red" />');
 
     expect($extracted)->toMatchObjects([
-        new BladeComponentCall('tests-background', new ComponentAttributeBag([
-            'color' => 'red'
-        ]))
+        new BladeComponentCall('tests-background', ['color' => 'red']),
     ]);
 });
 
@@ -22,10 +19,7 @@ it('can extract a component', function () {
     $extracted = $this->extractor->extract('<x-tests-foreground color="blue" fill />');
 
     expect($extracted)->toMatchObjects([
-        new BladeComponentCall('tests-foreground', new ComponentAttributeBag([
-            'color' => 'blue',
-            'fill' => 'true'
-        ]))
+        new BladeComponentCall('tests-foreground', ['color' => 'blue', 'fill' => 'true']),
     ]);
 });
 

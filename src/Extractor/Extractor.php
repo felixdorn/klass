@@ -1,15 +1,13 @@
 <?php
 
-
-namespace Felix\TailwindClassExtractor;
-
+namespace Felix\TailwindClassExtractor\Extractor;
 
 class Extractor
 {
     public function extract(string $code): array
     {
-        $calls = [];
-        $compiler = new ComponentCompiler();
+        $calls      = [];
+        $compiler   = new ComponentCompiler();
         $components = $compiler->compile($code);
 
         foreach ($components as $component) {

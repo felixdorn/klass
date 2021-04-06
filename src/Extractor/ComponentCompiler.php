@@ -1,11 +1,8 @@
 <?php
 
-
-namespace Felix\TailwindClassExtractor;
-
+namespace Felix\TailwindClassExtractor\Extractor;
 
 use Illuminate\Support\Str;
-use Illuminate\View\ComponentAttributeBag;
 
 class ComponentCompiler
 {
@@ -26,11 +23,10 @@ class ComponentCompiler
             $components[] = [$componentName, $this->compileAttributeString($matches[2][$k])];
         }
 
-
         return $components;
     }
 
-    protected function compileSelfClosingTags(string $code)
+    protected function compileSelfClosingTags(string $code): array
     {
         preg_match_all("/
             <
@@ -66,7 +62,6 @@ class ComponentCompiler
         /x", $code, $matches);
 
         return $matches;
-
     }
 
     protected function compileOpeningTags(string $code): array
@@ -107,7 +102,7 @@ class ComponentCompiler
         return $matches;
     }
 
-    protected function compileAttributeString(string $attributes): ComponentAttributeBag
+    protected function compileAttributeString(string $attributes): array
     {
         preg_match_all('/
             (?<attribute>[\w\-:.@]+)
@@ -125,9 +120,7 @@ class ComponentCompiler
             )?
         /x', $attributes, $matches);
 
-        return new ComponentAttributeBag(
-            array_combine($matches['attribute'], array_map([$this, 'normalizeAttributeValue'], $matches['value']))
-        );
+        return array_combine($matches['attribute'], array_map([$this, 'normalizeAttributeValue'], $matches['value'])) ?: [];
     }
 
     protected function normalizeAttributeValue(string $value): string
