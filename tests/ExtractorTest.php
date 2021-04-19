@@ -2,6 +2,7 @@
 
 use Felix\TailwindClassExtractor\Extractor\BladeComponentCall;
 use Felix\TailwindClassExtractor\Extractor\Extractor;
+use Tests\Fixtures\app\View\Components\Background;
 
 beforeEach(function () {
     $this->extractor = new Extractor();
@@ -11,15 +12,15 @@ it('can extract a self closing component', function () {
     $extracted = $this->extractor->extract('<x-tests-background color="red" />');
 
     expect($extracted)->toMatchObjects([
-        new BladeComponentCall('tests-background', ['color' => 'red']),
+        new BladeComponentCall('tests-background', Background::class, ['color' => 'red']),
     ]);
 });
 
 it('can extract a component', function () {
-    $extracted = $this->extractor->extract('<x-tests-foreground color="blue" fill />');
+    $extracted = $this->extractor->extract('<x-tests-background color="blue" fill />');
 
     expect($extracted)->toMatchObjects([
-        new BladeComponentCall('tests-foreground', ['color' => 'blue', 'fill' => 'true']),
+        new BladeComponentCall('tests-foreground', Background::class, ['color' => 'blue', 'fill' => 'true']),
     ]);
 });
 

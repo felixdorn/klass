@@ -25,7 +25,7 @@ class ComponentAttributesResolver
         $this->handleConstructorParameters();
         $this->handleComponentProperties();
 
-        return new BladeComponentDeclaration($this->component, array_unique($this->attributes), array_unique($this->defaults));
+        return new BladeComponentDeclaration($this->component, $this->class, array_unique($this->attributes), array_unique($this->defaults));
     }
 
     protected function handleConstructorParameters(): void

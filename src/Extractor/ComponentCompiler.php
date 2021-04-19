@@ -20,7 +20,11 @@ class ComponentCompiler
         $components = [];
 
         foreach ($matches[1] as $k => $componentName) {
-            $components[] = [$componentName, $this->compileAttributeString($matches[2][$k])];
+            $compiledString = app('blade.compiler')->compileString($code);
+
+            preg_match('/\$__env->getContainer\(\)->make\(([a-zA-Z1-9\\\\]+' . ucfirst($componentName) . ')::class,/m', $compiledString, $classMatch);
+
+            $components[] = [$componentName, $classMatch[1], $this->compileAttributeString($matches[2][$k])];
         }
 
         return $components;

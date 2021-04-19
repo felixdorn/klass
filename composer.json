@@ -44,5 +44,12 @@
             "@test:types",
             "@test:unit"
         ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Felix\\TailwindClassExtractor\\TailwindClassExtractorServiceProvider"
+            ]
+        }
     }
 }

@@ -4,18 +4,9 @@ namespace Felix\TailwindClassExtractor\Finder;
 
 class Finder
 {
-    public function getAllComponents(): array
+    public function resolveComponent(string $name, string $class): BladeComponentDeclaration
     {
-        $classComponentAliases = app('blade.compiler')->getClassComponentAliases();
-        $components            = [];
-
-        unset($classComponentAliases['dynamic-component']);
-
-        foreach ($classComponentAliases as $name => $class) {
-            $resolver     = new ComponentAttributesResolver($name, $class);
-            $components[] = $resolver->resolve();
-        }
-
-        return $components;
+        $resolver = new ComponentAttributesResolver($name, $class);
+        return $resolver->resolve();
     }
 }
