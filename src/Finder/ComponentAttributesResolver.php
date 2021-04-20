@@ -2,10 +2,8 @@
 
 namespace Felix\TailwindClassExtractor\Finder;
 
-use Felix\TailwindClassExtractor\Extractor\NonResolvableValue;
 use ReflectionClass;
 use ReflectionProperty;
-use Throwable;
 
 class ComponentAttributesResolver
 {
@@ -13,12 +11,12 @@ class ComponentAttributesResolver
     protected string $class;
     protected ReflectionClass $reflection;
     protected array $attributes = [];
-    protected array $defaults = [];
+    protected array $defaults   = [];
 
     public function __construct(string $component, string $class)
     {
-        $this->component = $component;
-        $this->class = $class;
+        $this->component  = $component;
+        $this->class      = $class;
         $this->reflection = new ReflectionClass($this->class);
     }
 
@@ -54,7 +52,7 @@ class ComponentAttributesResolver
 
     protected function handleComponentProperties(): void
     {
-        $properties = collect($this->reflection->getProperties())->mapWithKeys(fn(ReflectionProperty $property) => [$property->getName() => $property]);
+        $properties = collect($this->reflection->getProperties())->mapWithKeys(fn (ReflectionProperty $property) => [$property->getName() => $property]);
 
         $properties->each(function (ReflectionProperty $property) {
             if (!$this->isPropertyAttribute($property)) {

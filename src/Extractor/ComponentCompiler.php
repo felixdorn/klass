@@ -32,7 +32,6 @@ class ComponentCompiler
                     return ucfirst($matches[1]);
                 }, $componentClass);
 
-
                 preg_match('/\$__env->getContainer\(\)->make\(([a-zA-Z1-9\\\\]+' . ucfirst($componentClass) . ')::class,/m', $compiledString, $classMatch);
 
                 $componentClass = $classMatch[1];

@@ -2,10 +2,8 @@
 
 use Felix\TailwindClassExtractor\Extractor\BladeComponentCall;
 
-
 class MyComponent
 {
-
 }
 
 it('can set values', function () {

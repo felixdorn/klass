@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Felix\TailwindClassExtractor\Processor;
-
 
 use Felix\TailwindClassExtractor\Extractor\BladeComponentCall;
 use Felix\TailwindClassExtractor\Extractor\Extractor;
@@ -31,9 +29,9 @@ class Processor
 
     protected function resolveClassesForComponent(BladeComponentCall $call): string
     {
-        $component = (new Finder())->resolveComponent($call->getName(), $call->getClass());
+        $component  = (new Finder())->resolveComponent($call->getName(), $call->getClass());
         $attributes = $component->getDefaults();
-        $content = $component->getContent();
+        $content    = $component->getContent();
         foreach ($call->getAttributes() as $name => $value) {
             $attributes[str_starts_with($name, ':') ? substr($name, 1) : $name] = $value;
         }
@@ -47,18 +45,17 @@ class Processor
                 }
 
                 $attributes[$attribute] = $value;
-                $content = preg_replace('/{{\s+\$' . $attribute . '\s+}}/', $evaluated, $content);
-                $content = preg_replace('/\$' . $attribute . '/', $evaluated, $content);
+                $content                = preg_replace('/{{\s+\$' . $attribute . '\s+}}/', $evaluated, $content);
+                $content                = preg_replace('/\$' . $attribute . '/', $evaluated, $content);
             } catch (Throwable $exception) {
                 $content = preg_replace('/{{\s+\$' . $attribute . '\s+}}/', $value, $content);
                 $content = preg_replace('/\$' . $attribute . '/', $value, $content);
             }
-
         }
 
         preg_match_all('/[^<>"\'`\s]*[^<>"\'`\s:]/m', $content, $matches);
 
-        return collect($matches[0])->filter(function ($match) use ($component, $attributes) {
+        return collect($matches[0])->filter(function ($match) use ($attributes) {
             foreach ($attributes as $name => $attribute) {
                 if (str_contains($match, $attribute)) {
                     return true;

@@ -2,9 +2,7 @@
 
 namespace Felix\TailwindClassExtractor\Finder;
 
-use Closure;
 use Illuminate\View\View;
-use Opis\Closure\ReflectionClosure;
 use ReflectionClass;
 
 class BladeComponentDeclaration
@@ -16,10 +14,10 @@ class BladeComponentDeclaration
 
     public function __construct(string $name, string $class, array $attributes, array $defaults = [])
     {
-        $this->name = $name;
-        $this->class = $class;
+        $this->name       = $name;
+        $this->class      = $class;
         $this->attributes = $attributes;
-        $this->defaults = $defaults;
+        $this->defaults   = $defaults;
     }
 
     public function getClass(): string

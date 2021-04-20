@@ -10,9 +10,9 @@ class BladeComponentCall
 
     public function __construct(string $name, string $class, array $attributes)
     {
-        $this->name = $name;
+        $this->name       = $name;
         $this->attributes = $attributes;
-        $this->class = $class;
+        $this->class      = $class;
     }
 
     public function getName(): string

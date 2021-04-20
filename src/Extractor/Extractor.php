@@ -21,14 +21,14 @@ class Extractor
     protected function extractViewsToComponentCalls(string $directory): array
     {
         return collect(File::allFiles($directory))->map(
-            fn(SplFileInfo $file) => $this->extractComponentCalls($file->getContents())
+            fn (SplFileInfo $file) => $this->extractComponentCalls($file->getContents())
         )->flatten()->toArray();
     }
 
     public function extractComponentCalls(string $code): array
     {
-        $calls = [];
-        $compiler = new ComponentCompiler();
+        $calls      = [];
+        $compiler   = new ComponentCompiler();
         $components = $compiler->compile($code);
 
         foreach ($components as $component) {
