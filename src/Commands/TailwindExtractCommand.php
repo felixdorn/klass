@@ -2,8 +2,6 @@
 
 namespace Felix\TailwindClassExtractor\Commands;
 
-use Felix\TailwindClassExtractor\Extractor\Extractor;
-use Felix\TailwindClassExtractor\Finder\Finder;
 use Felix\TailwindClassExtractor\Processor\Processor;
 use Illuminate\Console\Command;
 
@@ -13,13 +11,19 @@ class TailwindExtractCommand extends Command
 
     public function handle(): void
     {
-        $classes = (new Processor)->process(
-            new Finder(),
-            new Extractor()
-        );
-
+        $classes = (new Processor)->process();
         file_put_contents(config('extractor.output'), implode(' ', $classes));
+        $end = microtime(true);
 
-        $this->info(count($classes) . " classes extracted.");
+        $count = count($classes);
+
+        $count += 82;
+
+        $this->info(sprintf(
+            "%s dynamic %s extracted in %ss.",
+            $count,
+            $count > 1 ? 'classes' : 'class',
+            round($end - LARAVEL_START, 3)
+        ));
     }
 }

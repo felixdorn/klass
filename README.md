@@ -1,4 +1,4 @@
-# tailwind-class-extractor for Laravel                 
+# Tailwind Class Extractor for Laravel
 
 [![Tests](https://github.com/felixdorn/tailwind-class-extractor/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/felixdorn/tailwind-class-extractor/actions/workflows/tests.yml)
 [![Formats](https://github.com/felixdorn/tailwind-class-extractor/actions/workflows/formats.yml/badge.svg?branch=master)](https://github.com/felixdorn/tailwind-class-extractor/actions/workflows/formats.yml)
@@ -17,11 +17,14 @@ composer require felixdorn/tailwind-class-extractor
 ```
 
 ## Usage
+
 // Usage goes here
 
 ## Testing
+
 ```bash
 composer test
 ```
 
-**tailwind-class-extractor** was created by **[Félix Dorn](https://twitter.com/afelixdorn)** under the **[MIT license](https://opensource.org/licenses/MIT)**.
+**tailwind-class-extractor** was created by **[Félix Dorn](https://twitter.com/afelixdorn)** under
+the **[MIT license](https://opensource.org/licenses/MIT)**.

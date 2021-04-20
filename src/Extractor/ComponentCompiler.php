@@ -13,6 +13,8 @@ class ComponentCompiler
             $this->compileOpeningTags($code)
         );
 
+        $classComponentAliases = app('blade.compiler')->getClassComponentAliases();
+
         if (count(array_filter($matches)) === 0) {
             return [];
         }
@@ -22,9 +24,21 @@ class ComponentCompiler
         foreach ($matches[1] as $k => $componentName) {
             $compiledString = app('blade.compiler')->compileString($code);
 
-            preg_match('/\$__env->getContainer\(\)->make\(([a-zA-Z1-9\\\\]+' . ucfirst($componentName) . ')::class,/m', $compiledString, $classMatch);
+            if (array_key_exists($componentName, $classComponentAliases)) {
+                $componentClass = $classComponentAliases[$componentName];
+            } else {
+                $componentClass = ucfirst(Str::afterLast($componentName, '.'));
+                $componentClass = preg_replace_callback('/-([a-zA-Z1-9]+)/', function ($matches) {
+                    return ucfirst($matches[1]);
+                }, $componentClass);
 
-            $components[] = [$componentName, $classMatch[1], $this->compileAttributeString($matches[2][$k])];
+
+                preg_match('/\$__env->getContainer\(\)->make\(([a-zA-Z1-9\\\\]+' . ucfirst($componentClass) . ')::class,/m', $compiledString, $classMatch);
+
+                $componentClass = $classMatch[1];
+            }
+
+            $components[] = [$componentName, $componentClass, $this->compileAttributeString($matches[2][$k])];
         }
 
         return $components;

@@ -2,7 +2,9 @@
 
 namespace Felix\TailwindClassExtractor\Finder;
 
+use Closure;
 use Illuminate\View\View;
+use Opis\Closure\ReflectionClosure;
 use ReflectionClass;
 
 class BladeComponentDeclaration
@@ -45,6 +47,11 @@ class BladeComponentDeclaration
         $ref = new ReflectionClass($this->class);
         /** @var View $component */
         $component = $ref->newInstanceWithoutConstructor()->render();
+
+        if (!$component instanceof View) {
+            // TODO: Do some smart stuff here maybe
+            return '';
+        }
 
         return file_get_contents($component->getPath());
     }

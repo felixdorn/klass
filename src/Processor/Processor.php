@@ -18,7 +18,7 @@ class Processor
         $this->calls = (new Extractor())->extractAllComponents();
     }
 
-    public function process(Finder $finder, Extractor $extractor): array
+    public function process(): array
     {
         $classes = [];
 
@@ -38,21 +38,28 @@ class Processor
             $attributes[str_starts_with($name, ':') ? substr($name, 1) : $name] = $value;
         }
 
-
         foreach ($attributes as $attribute => $value) {
             try {
-                $value = eval("return $value;");
+                $evaluated = eval("return $value");
+
+                if ($evaluated === null) {
+                    $evaluated = $value;
+                }
+
                 $attributes[$attribute] = $value;
-                $content = preg_replace('/{{\s+\$' . $attribute . '\s+}}/', $value, $content);
+                $content = preg_replace('/{{\s+\$' . $attribute . '\s+}}/', $evaluated, $content);
+                $content = preg_replace('/\$' . $attribute . '/', $evaluated, $content);
             } catch (Throwable $exception) {
                 $content = preg_replace('/{{\s+\$' . $attribute . '\s+}}/', $value, $content);
+                $content = preg_replace('/\$' . $attribute . '/', $value, $content);
             }
+
         }
 
         preg_match_all('/[^<>"\'`\s]*[^<>"\'`\s:]/m', $content, $matches);
 
-        return collect($matches[0])->filter(function ($match) use ($attributes) {
-            foreach ($attributes as $attribute) {
+        return collect($matches[0])->filter(function ($match) use ($component, $attributes) {
+            foreach ($attributes as $name => $attribute) {
                 if (str_contains($match, $attribute)) {
                     return true;
                 }
