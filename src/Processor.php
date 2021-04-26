@@ -59,7 +59,7 @@ class Processor
             }
 
             /** @phpstan-ignore-next-line */
-            $content = preg_replace('/{{\s+\$' . $attribute . '\s+}}/', $evaluated ?? $value, $content);
+            $content = preg_replace('/{{.+\$' . $attribute . '.+}}/', $evaluated ?? $value, $content);
             /** @phpstan-ignore-next-line */
             $content = preg_replace('/\$' . $attribute . '/', $evaluated ?? $value, $content);
         }
