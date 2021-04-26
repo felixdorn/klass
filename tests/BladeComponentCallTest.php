@@ -1,6 +1,6 @@
 <?php
 
-use Felix\TailwindClassExtractor\Component\ComponentCall;
+use Felix\Klass\Component\ComponentCall;
 use Tests\TestCase;
 
 uses(TestCase::class);

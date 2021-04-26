@@ -1,9 +1,9 @@
 <?php
 
-namespace Felix\TailwindClassExtractor;
+namespace Felix\Klass;
 
-use Felix\TailwindClassExtractor\Component\ComponentCall;
-use Felix\TailwindClassExtractor\Component\ComponentCompiler;
+use Felix\Klass\Component\ComponentCall;
+use Felix\Klass\Component\ComponentCompiler;
 
 class Extractor
 {

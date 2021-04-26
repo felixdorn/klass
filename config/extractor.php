@@ -3,12 +3,12 @@
 return [
     'components_paths' => [
         resource_path('views/components'),
-        base_path('vendor')
+        base_path('vendor'),
     ],
 
     'views_paths' => [
-        resource_path('views')
+        resource_path('views'),
     ],
 
-    'output' => base_path('storage/framework/tailwind-extracted-classes.txt')
+    'output' => base_path('storage/framework/extracted-classes.txt'),
 ];

@@ -1,13 +1,13 @@
 <?php
 
-namespace Felix\TailwindClassExtractor\Commands;
+namespace Felix\Klass\Commands;
 
-use Felix\TailwindClassExtractor\Processor;
+use Felix\Klass\Processor;
 use Illuminate\Console\Command;
 
-class TailwindExtractCommand extends Command
+class KlassExtractCommand extends Command
 {
-    protected $name = 'tailwind:extract';
+    protected $name = 'klass:extract';
 
     public function handle(): void
     {

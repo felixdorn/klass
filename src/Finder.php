@@ -1,8 +1,8 @@
 <?php
 
-namespace Felix\TailwindClassExtractor;
+namespace Felix\Klass;
 
-use Felix\TailwindClassExtractor\Component\ComponentDeclaration;
+use Felix\Klass\Component\ComponentDeclaration;
 use ReflectionClass;
 use ReflectionProperty;
 

@@ -1,7 +1,7 @@
 <?php
 
-use Felix\TailwindClassExtractor\Component\ComponentDeclaration;
-use Felix\TailwindClassExtractor\Finder;
+use Felix\Klass\Component\ComponentDeclaration;
+use Felix\Klass\Finder;
 use Illuminate\View\Component;
 use Tests\TestCase;
 

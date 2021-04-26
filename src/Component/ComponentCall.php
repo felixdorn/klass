@@ -1,6 +1,6 @@
 <?php
 
-namespace Felix\TailwindClassExtractor\Component;
+namespace Felix\Klass\Component;
 
 class ComponentCall
 {

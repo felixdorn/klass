@@ -1,6 +1,6 @@
 {
-    "name": "felixdorn/tailwind-class-extractor",
-    "description": "tailwind-class-extractor",
+    "name": "felixdorn/klass",
+    "description": "Extract dynamic classes in your Blade components",
     "license": "MIT",
     "authors": [
         {
@@ -20,7 +20,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Felix\\TailwindClassExtractor\\": "src/"
+            "Felix\\Klass\\": "src/"
         }
     },
     "autoload-dev": {
@@ -48,7 +48,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Felix\\TailwindClassExtractor\\TailwindClassExtractorServiceProvider"
+                "Felix\\Klass\\KlassServiceProvider"
             ]
         }
     }

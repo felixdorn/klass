@@ -1,16 +1,16 @@
 <?php
 
-namespace Felix\TailwindClassExtractor;
+namespace Felix\Klass;
 
-use Felix\TailwindClassExtractor\Commands\TailwindExtractCommand;
+use Felix\Klass\Commands\KlassExtractCommand;
 use Illuminate\Support\ServiceProvider;
 
-class TailwindClassExtractorServiceProvider extends ServiceProvider
+class KlassServiceProvider extends ServiceProvider
 {
     public function register()
     {
         $this->commands([
-            TailwindExtractCommand::class,
+            KlassExtractCommand::class,
         ]);
 
         $this->mergeConfigFrom(__DIR__ . '/../config/extractor.php', 'extractor');

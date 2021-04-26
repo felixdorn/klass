@@ -1,8 +1,8 @@
 <?php
 
-namespace Felix\TailwindClassExtractor;
+namespace Felix\Klass;
 
-use Felix\TailwindClassExtractor\Component\ComponentCall;
+use Felix\Klass\Component\ComponentCall;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\Finder\SplFileInfo;
 use Throwable;

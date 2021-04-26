@@ -1,10 +1,14 @@
-# Tailwind Class Extractor for Laravel
+# Klass for Laravel
 
-[![Tests](https://github.com/felixdorn/tailwind-class-extractor/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/felixdorn/tailwind-class-extractor/actions/workflows/tests.yml)
-[![Formats](https://github.com/felixdorn/tailwind-class-extractor/actions/workflows/formats.yml/badge.svg?branch=master)](https://github.com/felixdorn/tailwind-class-extractor/actions/workflows/formats.yml)
-[![Version](https://poser.pugx.org/felixdorn/tailwind-class-extractor/version)](//packagist.org/packages/felixdorn/tailwind-class-extractor)
-[![Total Downloads](https://poser.pugx.org/felixdorn/tailwind-class-extractor/downloads)](//packagist.org/packages/felixdorn/tailwind-class-extractor)
-[![License](https://poser.pugx.org/felixdorn/tailwind-class-extractor/license)](//packagist.org/packages/felixdorn/tailwind-class-extractor)
+Klass extract your dynamic classes in your Blade components to a file that PurgeCSS can process.
+
+The plugin for Laravel Mix can be found [here](). (no yet released, still WIP)
+
+[![Tests](https://github.com/felixdorn/klass/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/felixdorn/klass/actions/workflows/tests.yml)
+[![Formats](https://github.com/felixdorn/klass/actions/workflows/formats.yml/badge.svg?branch=master)](https://github.com/felixdorn/klass/actions/workflows/formats.yml)
+[![Version](https://poser.pugx.org/felixdorn/klass/version)](//packagist.org/packages/felixdorn/klass)
+[![Total Downloads](https://poser.pugx.org/felixdorn/klass/downloads)](//packagist.org/packages/felixdorn/klass)
+[![License](https://poser.pugx.org/felixdorn/klass/license)](//packagist.org/packages/felixdorn/klass)
 
 ## Installation
 
@@ -13,12 +17,48 @@
 You can install the package via composer:
 
 ```bash
-composer require felixdorn/tailwind-class-extractor
+composer require felixdorn/klass
 ```
 
 ## Usage
 
-// Usage goes here
+```php
+// app/View/Components/Button.php
+class Button extends Component {
+    public string $color;
+    
+    public function __construct(string $color = 'blue') {
+        $this->color = $color;
+    }
+    
+    public function render() {
+        return view('components.button');
+    } 
+}
+```
+
+```blade
+<!-- resources/views/components/button.blade.php -->
+<button class="bg-{{ $color }}-500" {{ $attributes }}>
+    {{ $slot }}
+</button>
+```
+
+```html
+<!-- resources/views/welcome.blade.php -->
+<x-button color="red"/>
+```
+
+```bash
+php artisan klass:extract
+```
+
+```text
+// storage/framework/extracted-classes.txt
+bg-red-500
+```
+
+If you use the [Laravel Mix plugin]() (still WIP, not released yet), the last two steps are done automatically.
 
 ## Testing
 
@@ -26,5 +66,5 @@ composer require felixdorn/tailwind-class-extractor
 composer test
 ```
 
-**tailwind-class-extractor** was created by **[Félix Dorn](https://twitter.com/afelixdorn)** under
+**Klass** was created by **[Félix Dorn](https://twitter.com/afelixdorn)** under
 the **[MIT license](https://opensource.org/licenses/MIT)**.

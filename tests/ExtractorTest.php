@@ -1,7 +1,7 @@
 <?php
 
-use Felix\TailwindClassExtractor\Component\ComponentCall;
-use Felix\TailwindClassExtractor\Extractor;
+use Felix\Klass\Component\ComponentCall;
+use Felix\Klass\Extractor;
 use Tests\Fixtures\app\View\Components\Background;
 use Tests\TestCase;
 
