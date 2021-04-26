@@ -1,13 +1,17 @@
 <?php
 
-namespace Felix\TailwindClassExtractor\Extractor;
+namespace Felix\TailwindClassExtractor\Component;
 
-class BladeComponentCall
+class ComponentCall
 {
     protected string $name;
     protected array $attributes;
+    /** @var class-string */
     protected string $class;
 
+    /**
+     * @param class-string $class
+     */
     public function __construct(string $name, string $class, array $attributes)
     {
         $this->name       = $name;
@@ -25,6 +29,9 @@ class BladeComponentCall
         return $this->attributes;
     }
 
+    /**
+     * @return class-string
+     */
     public function getClass(): string
     {
         return $this->class;

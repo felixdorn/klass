@@ -1,10 +1,10 @@
 <?php
 
-namespace Felix\TailwindClassExtractor\Processor;
+namespace Felix\TailwindClassExtractor;
 
-use Felix\TailwindClassExtractor\Extractor\BladeComponentCall;
-use Felix\TailwindClassExtractor\Extractor\Extractor;
-use Felix\TailwindClassExtractor\Finder\Finder;
+use Felix\TailwindClassExtractor\Component\ComponentCall;
+use Illuminate\Support\Facades\File;
+use Symfony\Component\Finder\SplFileInfo;
 use Throwable;
 
 class Processor
@@ -13,7 +13,17 @@ class Processor
 
     public function __construct()
     {
-        $this->calls = (new Extractor())->extractAllComponents();
+        $calls = collect();
+
+        foreach (config('extractor.views_paths') as $directory) {
+            $calls->push(
+                collect(File::allFiles($directory))->map(
+                    fn (SplFileInfo $file) => Extractor::extractCalls($file->getContents())
+                )->flatten()->toArray()
+            );
+        }
+
+        $this->calls = $calls->flatten()->toArray();
     }
 
     public function process(): array
@@ -27,9 +37,9 @@ class Processor
         return array_unique($classes);
     }
 
-    protected function resolveClassesForComponent(BladeComponentCall $call): string
+    protected function resolveClassesForComponent(ComponentCall $call): string
     {
-        $component  = (new Finder())->resolveComponent($call->getName(), $call->getClass());
+        $component  = (new Finder($call->getName(), $call->getClass()))->resolve();
         $attributes = $component->getDefaults();
         $content    = $component->getContent();
         foreach ($call->getAttributes() as $name => $value) {
@@ -45,14 +55,16 @@ class Processor
                 }
 
                 $attributes[$attribute] = $value;
-                $content                = preg_replace('/{{\s+\$' . $attribute . '\s+}}/', $evaluated, $content);
-                $content                = preg_replace('/\$' . $attribute . '/', $evaluated, $content);
             } catch (Throwable $exception) {
-                $content = preg_replace('/{{\s+\$' . $attribute . '\s+}}/', $value, $content);
-                $content = preg_replace('/\$' . $attribute . '/', $value, $content);
             }
+
+            /** @phpstan-ignore-next-line */
+            $content = preg_replace('/{{\s+\$' . $attribute . '\s+}}/', $evaluated ?? $value, $content);
+            /** @phpstan-ignore-next-line */
+            $content = preg_replace('/\$' . $attribute . '/', $evaluated ?? $value, $content);
         }
 
+        /* @phpstan-ignore-next-line */
         preg_match_all('/[^<>"\'`\s]*[^<>"\'`\s:]/m', $content, $matches);
 
         return collect($matches[0])->filter(function ($match) use ($attributes) {

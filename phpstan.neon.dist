@@ -1,8 +1,9 @@
 parameters:
-    level: max
-    paths:
-        - src
-
-    checkMissingIterableValueType: false
-    checkGenericClassInNonGenericObjectType: false
-    reportUnmatchedIgnoredErrors: true
+  level: max
+  paths:
+    - src
+  bootstrapFiles:
+    - src/constants.php
+  checkMissingIterableValueType: false
+  checkGenericClassInNonGenericObjectType: false
+  reportUnmatchedIgnoredErrors: true

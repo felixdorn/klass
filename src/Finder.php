@@ -1,18 +1,25 @@
 <?php
 
-namespace Felix\TailwindClassExtractor\Finder;
+namespace Felix\TailwindClassExtractor;
 
+use Felix\TailwindClassExtractor\Component\ComponentDeclaration;
 use ReflectionClass;
 use ReflectionProperty;
 
-class ComponentAttributesResolver
+class Finder
 {
     protected string $component;
+    /**
+     * @var class-string
+     */
     protected string $class;
     protected ReflectionClass $reflection;
     protected array $attributes = [];
     protected array $defaults   = [];
 
+    /**
+     * @param class-string $class
+     */
     public function __construct(string $component, string $class)
     {
         $this->component  = $component;
@@ -20,7 +27,7 @@ class ComponentAttributesResolver
         $this->reflection = new ReflectionClass($this->class);
     }
 
-    public function resolve(): BladeComponentDeclaration
+    public function resolve(): ComponentDeclaration
     {
         $this->handleConstructorParameters();
         $this->handleComponentProperties();
@@ -30,7 +37,7 @@ class ComponentAttributesResolver
         });
         $this->attributes = array_intersect_key($this->attributes, $this->defaults);
 
-        return new BladeComponentDeclaration($this->component, $this->class, array_unique($this->attributes), array_unique($this->defaults));
+        return new ComponentDeclaration($this->component, $this->class, array_unique($this->attributes), array_unique($this->defaults));
     }
 
     protected function handleConstructorParameters(): void

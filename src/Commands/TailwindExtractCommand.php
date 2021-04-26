@@ -2,7 +2,7 @@
 
 namespace Felix\TailwindClassExtractor\Commands;
 
-use Felix\TailwindClassExtractor\Processor\Processor;
+use Felix\TailwindClassExtractor\Processor;
 use Illuminate\Console\Command;
 
 class TailwindExtractCommand extends Command
@@ -16,8 +16,6 @@ class TailwindExtractCommand extends Command
         $end = microtime(true);
 
         $count = count($classes);
-
-        $count += 82;
 
         $this->info(sprintf(
             '%s dynamic %s extracted in %ss.',

@@ -1,7 +1,7 @@
 <?php
 
-use Felix\TailwindClassExtractor\Finder\BladeComponentDeclaration;
-use Felix\TailwindClassExtractor\Finder\ComponentAttributesResolver;
+use Felix\TailwindClassExtractor\Component\ComponentDeclaration;
+use Felix\TailwindClassExtractor\Finder;
 use Illuminate\View\Component;
 use Tests\TestCase;
 
@@ -48,18 +48,18 @@ class _BackgroundWithStaticProperty
 }
 
 it('can resolve component constructor parameters', function () {
-    $resolver = new ComponentAttributesResolver('background', _Background::class);
+    $resolver = new Finder('background', _Background::class);
 
-    expect($resolver->resolve())->toMatchObjectDeeply(new BladeComponentDeclaration('background', ['color'], ['color' => 'blue']));
+    expect($resolver->resolve())->toMatchObjectDeeply(new ComponentDeclaration('background', _Background::class, [], ['color' => 'blue']));
 });
 
 it('does not resolve protected / private properties', function () {
-    $resolver = new ComponentAttributesResolver('background', _BackgroundWithPrivateProperty::class);
+    $resolver = new Finder('background', _BackgroundWithPrivateProperty::class);
 
-    expect($resolver->resolve())->toMatchObjectDeeply(new BladeComponentDeclaration('background', [], []));
+    expect($resolver->resolve())->toMatchObjectDeeply(new ComponentDeclaration('background', _BackgroundWithPrivateProperty::class, [], []));
 });
 it('does not resolve static properties', function () {
-    $resolver = new ComponentAttributesResolver('background', _BackgroundWithStaticProperty::class);
+    $resolver = new Finder('background', _BackgroundWithStaticProperty::class);
 
-    expect($resolver->resolve())->toMatchObjectDeeply(new BladeComponentDeclaration('background', [], []));
+    expect($resolver->resolve())->toMatchObjectDeeply(new ComponentDeclaration('background', _BackgroundWithStaticProperty::class, [], []));
 });

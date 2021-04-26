@@ -1,17 +1,24 @@
 <?php
 
-namespace Felix\TailwindClassExtractor\Finder;
+namespace Felix\TailwindClassExtractor\Component;
 
+use Illuminate\View\Component;
 use Illuminate\View\View;
 use ReflectionClass;
 
-class BladeComponentDeclaration
+class ComponentDeclaration
 {
     protected string $name;
     protected array $attributes;
     protected array $defaults;
+    /**
+     * @var class-string
+     */
     protected string $class;
 
+    /**
+     * @param class-string $class
+     */
     public function __construct(string $name, string $class, array $attributes, array $defaults = [])
     {
         $this->name       = $name;
@@ -42,8 +49,8 @@ class BladeComponentDeclaration
 
     public function getContent(): string
     {
-        $ref = new ReflectionClass($this->class);
-        /** @var View $component */
+        /** @var ReflectionClass<Component> $ref */
+        $ref       = new ReflectionClass($this->class);
         $component = $ref->newInstanceWithoutConstructor()->render();
 
         if (!$component instanceof View) {
@@ -51,6 +58,6 @@ class BladeComponentDeclaration
             return '';
         }
 
-        return file_get_contents($component->getPath());
+        return file_get_contents($component->getPath()) ?: '';
     }
 }

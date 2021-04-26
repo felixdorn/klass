@@ -1,6 +1,6 @@
 <?php
 
-namespace Felix\TailwindClassExtractor\Extractor;
+namespace Felix\TailwindClassExtractor\Component;
 
 use Illuminate\Support\Str;
 
@@ -30,7 +30,7 @@ class ComponentCompiler
                 $componentClass = ucfirst(Str::afterLast($componentName, '.'));
                 $componentClass = preg_replace_callback('/-([a-zA-Z1-9]+)/', function ($matches) {
                     return ucfirst($matches[1]);
-                }, $componentClass);
+                }, $componentClass) ?? '';
 
                 preg_match('/\$__env->getContainer\(\)->make\(([a-zA-Z1-9\\\\]+' . ucfirst($componentClass) . ')::class,/m', $compiledString, $classMatch);
 
