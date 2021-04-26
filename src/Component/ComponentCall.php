@@ -36,4 +36,17 @@ class ComponentCall
     {
         return $this->class;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getAttribute(string $name)
+    {
+        return $this->attributes[$name];
+    }
+
+    public function hasAttribute(string $name): bool
+    {
+        return array_key_exists($name, $this->attributes);
+    }
 }

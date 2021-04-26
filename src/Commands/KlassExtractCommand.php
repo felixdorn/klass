@@ -12,6 +12,13 @@ class KlassExtractCommand extends Command
     public function handle(): void
     {
         $classes = (new Processor())->process();
+//
+//        foreach ($classes as $class) {
+//            if (str_contains($class, '$')) {
+//                $this->line($class);
+//            }
+//        }
+
         file_put_contents(config('klass.output'), implode(' ', $classes));
         $end = microtime(true);
 

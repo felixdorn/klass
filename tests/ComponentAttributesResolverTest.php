@@ -50,7 +50,7 @@ class _BackgroundWithStaticProperty
 it('can resolve component constructor parameters', function () {
     $resolver = new Finder('background', _Background::class);
 
-    expect($resolver->resolve())->toMatchObjectDeeply(new ComponentDeclaration('background', _Background::class, [], ['color' => 'blue']));
+    expect($resolver->resolve())->toMatchObjectDeeply(new ComponentDeclaration('background', _Background::class, ['color'], ['color' => 'blue']));
 });
 
 it('does not resolve protected / private properties', function () {

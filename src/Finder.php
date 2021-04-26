@@ -9,9 +9,7 @@ use ReflectionProperty;
 class Finder
 {
     protected string $component;
-    /**
-     * @var class-string
-     */
+    /** @var class-string */
     protected string $class;
     protected ReflectionClass $reflection;
     protected array $attributes = [];
@@ -29,18 +27,15 @@ class Finder
 
     public function resolve(): ComponentDeclaration
     {
-        $this->handleConstructorParameters();
+        $this->handleConstructorParametersWithReflection();
         $this->handleComponentProperties();
 
-        $this->defaults = array_filter($this->defaults, function ($default) {
-            return is_scalar($default);
-        });
-        $this->attributes = array_intersect_key($this->attributes, $this->defaults);
+        $this->defaults = array_filter($this->defaults, 'is_scalar');
 
-        return new ComponentDeclaration($this->component, $this->class, array_unique($this->attributes), array_unique($this->defaults));
+        return new ComponentDeclaration($this->component, $this->class, array_unique($this->attributes), $this->defaults);
     }
 
-    protected function handleConstructorParameters(): void
+    protected function handleConstructorParametersWithReflection(): void
     {
         if ($this->reflection->getConstructor() === null || $this->reflection->getConstructor()->getNumberOfParameters() === 0) {
             return;
@@ -51,7 +46,11 @@ class Finder
         foreach ($parameters as $parameter) {
             $this->attributes[] = $parameter->getName();
 
-            if ($parameter->isDefaultValueAvailable()) {
+            if (!$parameter->isDefaultValueAvailable()) {
+                continue;
+            }
+
+            if ($parameter->getDefaultValue() !== null) {
                 $this->defaults[$parameter->getName()] = $parameter->getDefaultValue();
             }
         }
@@ -60,7 +59,6 @@ class Finder
     protected function handleComponentProperties(): void
     {
         $properties = collect($this->reflection->getProperties())->mapWithKeys(fn (ReflectionProperty $property) => [$property->getName() => $property]);
-
         $properties->each(function (ReflectionProperty $property) {
             if (!$this->isPropertyAttribute($property)) {
                 return;

@@ -11,9 +11,7 @@ class ComponentDeclaration
     protected string $name;
     protected array $attributes;
     protected array $defaults;
-    /**
-     * @var class-string
-     */
+    /** @var class-string */
     protected string $class;
 
     /**
@@ -27,6 +25,9 @@ class ComponentDeclaration
         $this->defaults   = $defaults;
     }
 
+    /**
+     * @return class-string
+     */
     public function getClass(): string
     {
         return $this->class;
@@ -65,5 +66,18 @@ class ComponentDeclaration
         }
 
         return file_get_contents($component->getPath()) ?: '';
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDefault(string $name)
+    {
+        return $this->defaults[$name];
+    }
+
+    public function hasDefault(string $name): bool
+    {
+        return array_key_exists($name, $this->defaults);
     }
 }
