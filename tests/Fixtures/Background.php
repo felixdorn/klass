@@ -13,8 +13,13 @@ class Background extends Component
         $this->color = $color;
     }
 
-    public function render()
+    public function render(): string
     {
-        return view('tests::background');
+        return <<<'BLADE'
+<div class"bg-{{ $color }}-500">
+    {{ $slot }}
+</div>
+BLADE;
+;
     }
 }

@@ -53,6 +53,12 @@ class ComponentDeclaration
         $ref       = new ReflectionClass($this->class);
         $component = $ref->newInstanceWithoutConstructor()->render();
 
+        // Support for inline components
+        if (gettype($component) === 'string') {
+            return $component;
+        }
+
+        // Support for closures in render() should go there
         if (!$component instanceof View) {
             // TODO: Do some smart stuff here maybe
             return '';

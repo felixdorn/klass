@@ -47,6 +47,7 @@ class Button extends Component {
 ```html
 <!-- resources/views/welcome.blade.php -->
 <x-button color="red"/>
+<x-button/>
 ```
 
 ```bash
@@ -55,10 +56,34 @@ php artisan klass:extract
 
 ```text
 // storage/framework/extracted-classes.txt
-bg-red-500
+bg-red-500 bg-blue-500
 ```
 
+You can now add that file to PurgeCSS or a similar tool to include those classes in your final CSS build.
+
 If you use the [Laravel Mix plugin]() (still WIP, not released yet), the last two steps are done automatically.
+
+## Limitations
+
+```php
+class Button extends Component {
+    public function render() {
+        return function ($componentData) {
+            return view('components.button', $componentData);
+        };
+    }
+}
+```
+
+Returning a closure in `render()` makes it impossible for Klass to extract dynamic classes in the component.
+
+## Tailwind & JIT
+
+Klass very well with the old Tailwind workflow aka use a build with a ton of classes in development and then remove all
+the unused classes in production. But recently, Tailwind got a JIT compiler to have production-like css in development.
+
+Klass could work quite easily with the JIT compiler. At compile time, `php artisan klass:extract` should be called but I
+have yet to figure out how to do that in a smart way.
 
 ## Testing
 
