@@ -54,7 +54,7 @@ class ComponentDeclaration
         $component = $ref->newInstanceWithoutConstructor()->render();
 
         // Support for inline components
-        if (gettype($component) === 'string') {
+        if (is_string($component)) {
             return $component;
         }
 
