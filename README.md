@@ -102,10 +102,10 @@ class Button extends Component {
 
 Returning a closure in `render()` makes it impossible for Klass to extract dynamic classes in the component.
 
-## Tailwind & JIT
+## Tailwind & JIT compilation
 
-Klass very well with the old Tailwind workflow aka use a build with a ton of classes in development and then remove all
-the unused classes in production. But recently, Tailwind got a JIT compiler to have production-like css in development.
+Klass works well with the old Tailwind workflow aka use a build with a ton of classes in development and then remove all of
+the unused classes in production. However, recently, Tailwind got a JIT compiler to have a production-like css in development.
 
 Klass could work quite easily with the JIT compiler. At compile time, `php artisan klass:extract` should be called but I
 have yet to figure out how to do that in a smart way.
