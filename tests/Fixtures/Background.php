@@ -20,6 +20,5 @@ class Background extends Component
     {{ $slot }}
 </div>
 BLADE;
-;
     }
 }

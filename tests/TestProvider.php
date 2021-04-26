@@ -4,7 +4,6 @@ namespace Tests;
 
 use Illuminate\Support\ServiceProvider;
 use Tests\Fixtures\app\View\Components\Background;
-use voku\helper\ASCII;
 
 class TestProvider extends ServiceProvider
 {
