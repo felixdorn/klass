@@ -63,6 +63,31 @@ You can now add that file to PurgeCSS or a similar tool to include those classes
 
 If you use the [Laravel Mix plugin]() (still WIP, not released yet), the last two steps are done automatically.
 
+## Configuration
+
+You can publish the config file with:
+
+```bash
+php artisan vendor:publish --provider="Felix\\Klass\\KlassServiceProvider" --tag="klass-config"
+```
+
+This is the contents of the published config file:
+
+```php
+return [
+    'components_paths' => [
+        resource_path('views/components'),
+        base_path('vendor'),
+    ],
+
+    'views_paths' => [
+        resource_path('views'),
+    ],
+
+    'output' => base_path('storage/framework/extracted-classes.txt'),
+];
+```
+
 ## Limitations
 
 ```php
@@ -84,6 +109,11 @@ the unused classes in production. But recently, Tailwind got a JIT compiler to h
 
 Klass could work quite easily with the JIT compiler. At compile time, `php artisan klass:extract` should be called but I
 have yet to figure out how to do that in a smart way.
+
+## Livewire
+
+Blade components used in a Livewire component are analyzed. However, we do not support Livewire components in itself. I
+have no plans to support it, but feel free to submit a PR.
 
 ## Testing
 

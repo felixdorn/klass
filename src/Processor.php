@@ -15,7 +15,7 @@ class Processor
     {
         $calls = collect();
 
-        foreach (config('extractor.views_paths') as $directory) {
+        foreach (config('klass.views_paths') as $directory) {
             $calls->push(
                 collect(File::allFiles($directory))->map(
                     fn (SplFileInfo $file) => Extractor::extractCalls($file->getContents())

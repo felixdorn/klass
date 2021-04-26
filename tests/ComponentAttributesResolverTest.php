@@ -8,7 +8,7 @@ use Tests\TestCase;
 uses(TestCase::class);
 
 beforeEach(function () {
-    config()->set('extractor', [
+    config()->set('klass', [
         'components_paths' => [
             __DIR__ . '/Fixtures/resources/views/components',
         ],
