@@ -1,6 +1,6 @@
 # Klass for Laravel
 
-**A stable version that will fix the limitations stated below is in work [here](https://github.com/felixdorn/klass/tree/v1)
+**A stable version that will fix the limitations stated below is in work [here](https://github.com/felixdorn/klass/tree/v1)**
 
 Klass extracts your dynamic classes in your Blade components to a file that PurgeCSS can process.
 
