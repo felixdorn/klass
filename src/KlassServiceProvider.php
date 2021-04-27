@@ -7,7 +7,7 @@ use Illuminate\Support\ServiceProvider;
 
 class KlassServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         $this->commands([
             KlassExtractCommand::class,

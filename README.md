@@ -111,7 +111,8 @@ class Icon extends Component {
 So if you type an attribute as an abstract class like `Illuminate\Database\Eloquent\Model`. It would simply ignore use
 only the properties and constructor parameters to resolve the attributes. .
 
-Workaround: The only workaround is to allow the type to be nullable to make it so Klass analyse properties defined more dynamically like `$type` in the example above.
+Workaround: The only workaround is to allow the type to be nullable to make it so Klass analyse properties defined more
+dynamically like `$type` in the example above.
 
 ### Returning a Closure in `render()`
 
@@ -149,18 +150,7 @@ for it, if you feel like contributing.
 This API has yet to be implemented.
 
 ```php
-$extracted = Klass::extract(Component::class);
-$extracted->getCalls();
-$extracted->hasCalls();
-
-$component = $extracted->getComponent();
-$component->getName();
-$component->getClass();
-$component->getAttributes();
-$component->getDefaults();
-$component->getContent();
-
-Klass::listen('event', function () {});
+Klass::extract($component);
 ```
 
 So we could add more commands such as `klass:extract` without copy pasting things around and external libraries could
