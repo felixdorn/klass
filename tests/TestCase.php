@@ -9,7 +9,7 @@ class TestCase extends BaseTestCase
 {
     protected function setUp(): void
     {
-        $this->setUpTheTestEnvironment();
+        parent::setUp();
 
         $this->app->make('blade.compiler')->component(
             Components\Background::class,

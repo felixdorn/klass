@@ -19,36 +19,36 @@ class Klass
         return self::$uniqueInstance;
     }
 
-    public function tree(): Tree
+    public function calls(): Calls
     {
         $viewsPath = config('klass.views_paths');
         $calls     = [];
         foreach ($viewsPath as $directory) {
             $calls[] = array_map(
                 fn (SplFileInfo $view) => $this->extractCalls($view->getContents()),
-                $this->allFiles($directory)
+                $this->allBladeViews($directory)
             );
         }
 
-        return new Tree(Arr::flatten($calls));
+        return new Calls(Arr::flatten($calls));
     }
 
-    protected function extractCalls(string $code): array
+    public function extractCalls(string $code): array
     {
-        $componentCompiler = new ComponentCallsCompiler();
+        $componentCompiler = new CallsCompiler();
         $components        = $componentCompiler->compile($code);
 
         return array_map(function (array $component) {
             [$name, $class, $attributes] = $component;
 
-            return new ComponentCall(
-                ComponentDeclarationFactory::findOrCreate($name, $class),
+            return new Call(
+                DeclarationFactory::findOrCreate($name, $class),
                 $attributes
             );
         }, $components);
     }
 
-    protected function allFiles(string $directory): array
+    protected function allBladeViews(string $directory): array
     {
         return iterator_to_array(
             (new Finder())

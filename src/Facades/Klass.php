@@ -2,11 +2,11 @@
 
 namespace Felix\Klass\Facades;
 
+use Felix\Klass\Calls;
 use Felix\Klass\Klass as Concrete;
-use Felix\Klass\Tree;
 
 /**
- * @method static Tree tree()
+ * @method static Calls calls()
  */
 class Klass
 {

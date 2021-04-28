@@ -2,7 +2,7 @@
 
 namespace Felix\Klass;
 
-class ComponentDeclaration
+class Declaration
 {
     protected string $name;
     protected string $class;

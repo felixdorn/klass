@@ -1,13 +1,13 @@
 <?php
 
-use Felix\Klass\ComponentCallsCompiler;
+use Felix\Klass\CallsCompiler;
 use Tests\Components\Background;
 use Tests\TestCase;
 
 uses(TestCase::class);
 
 beforeEach(function () {
-    $this->compiler = new ComponentCallsCompiler();
+    $this->compiler = new CallsCompiler();
 });
 
 it('returns an empty array if no components are called', function () {

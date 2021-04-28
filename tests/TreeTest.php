@@ -1,21 +1,22 @@
 <?php
 
-use Felix\Klass\ComponentCall;
-use Felix\Klass\ComponentDeclaration;
-use Felix\Klass\Tree;
+use Felix\Klass\Call;
+use Felix\Klass\Calls;
+use Felix\Klass\Declaration;
+use Felix\Klass\Visitors\CallableVisitor;
 
 it('can visit a node', function () {
     $calls = [
-        new ComponentCall(
-            new ComponentDeclaration(
+        new Call(
+            new Declaration(
                 'background',
                 'Background',
                 '',
                 []
             ),
         ),
-        new ComponentCall(
-            new ComponentDeclaration(
+        new Call(
+            new Declaration(
                 'background',
                 'Background',
                 '',
@@ -23,6 +24,9 @@ it('can visit a node', function () {
             )
         ),
     ];
-    $tree = new Tree($calls);
-    $tree->visit(fn (ComponentCall $call) => expect($call)->toBe($calls[0]));
+    $tree = new Calls($calls);
+    $tree->addVisitor(new CallableVisitor(function (Call $call) use ($calls) {
+        expect($call)->toBe($calls[0]);
+    }));
+    $tree->visit();
 });

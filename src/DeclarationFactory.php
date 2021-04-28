@@ -6,9 +6,9 @@ use Illuminate\View\Component;
 use Illuminate\View\View;
 use ReflectionClass;
 
-class ComponentDeclarationFactory
+class DeclarationFactory
 {
-    /** @var ComponentDeclaration[] */
+    /** @var Declaration[] */
     protected static array $declarations = [];
 
     public static function declarations(): array
@@ -17,7 +17,7 @@ class ComponentDeclarationFactory
     }
 
     /** @param class-string $class */
-    public static function findOrCreate(string $name, string $class): ComponentDeclaration
+    public static function findOrCreate(string $name, string $class): Declaration
     {
         if (static::has($name)) {
             return static::find($name);
@@ -31,12 +31,12 @@ class ComponentDeclarationFactory
         return array_key_exists($name, static::$declarations);
     }
 
-    public static function find(string $name): ComponentDeclaration
+    public static function find(string $name): Declaration
     {
         return static::$declarations[$name];
     }
 
-    public static function add(ComponentDeclaration $declaration): ComponentDeclaration
+    public static function add(Declaration $declaration): Declaration
     {
         static::$declarations[$declaration->getName()] = $declaration;
 
@@ -44,13 +44,13 @@ class ComponentDeclarationFactory
     }
 
     /** @param class-string $class */
-    public static function create(string $name, string $class): ComponentDeclaration
+    public static function create(string $name, string $class): Declaration
     {
-        return new ComponentDeclaration(
+        return new Declaration(
             $name,
             $class,
             static::getComponentContents($name, $class),
-            []
+            AttributesResolver::getAttributes($class)
         );
     }
 

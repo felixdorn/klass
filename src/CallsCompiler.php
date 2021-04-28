@@ -4,7 +4,7 @@ namespace Felix\Klass;
 
 use Illuminate\Support\Str;
 
-class ComponentCallsCompiler
+class CallsCompiler
 {
     public function compile(string $code): array
     {
