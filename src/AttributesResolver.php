@@ -33,6 +33,7 @@ class AttributesResolver
     {
         $this->handleConstructorParametersWithReflection();
         $this->handleComponentProperties();
+        $this->handlePropertiesDefinedInConstructor();
 
         return array_filter($this->attributes, function ($attribute) {
             return is_scalar($attribute) || is_null($attribute);
@@ -95,5 +96,22 @@ class AttributesResolver
         }
 
         return true;
+    }
+
+    private function handlePropertiesDefinedInConstructor()
+    {
+//                try {
+//                    $built = Container::resolve($component->getClass(), $attributes->toArray());
+//                    $reflection = new ReflectionClass($built);
+//
+//                    return $attributes->mapWithKeys(function ($value, $key) use ($built, $reflection) {
+//                        if (!$reflection->hasProperty($key)) {
+//                            return [$key => $value];
+//                        }
+//if (!$this->propertyHasScalarType($reflection->getProperty($key))) {
+//    return [$key => $value];
+//}
+//
+//return [$key => $reflection->getProperty($key)->getValue($built)];
     }
 }
