@@ -4,19 +4,17 @@ namespace Tests\Components;
 
 use Illuminate\View\Component;
 
-class Background extends Component
+class SimpleVariable extends Component
 {
     public string $color;
 
-    public function __construct(string $color = 'indigo')
+    public function __construct(string $color)
     {
         $this->color = $color;
     }
 
     public function render()
     {
-        return <<<'BLADE'
-<div class="bg-{{ $color }}-500">{{ $slot }}</div>
-BLADE;
+        return view('__klass_tests::simple-variable');
     }
 }

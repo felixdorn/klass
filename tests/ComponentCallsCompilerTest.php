@@ -1,7 +1,7 @@
 <?php
 
 use Felix\Klass\CallsCompiler;
-use Tests\Components\Background;
+use Tests\Components\SimpleVariable;
 use Tests\TestCase;
 
 uses(TestCase::class);
@@ -15,17 +15,17 @@ it('returns an empty array if no components are called', function () {
 });
 
 it('returns called self closing components', function () {
-    $compiled = $this->compiler->compile('<x-background color="blue" />');
+    $compiled = $this->compiler->compile('<x-simple-variable color="blue" />');
     expect($compiled)->toHaveCount(1);
-    expect($compiled[0][0])->toBe('background');
-    expect($compiled[0][1])->toBe(Background::class);
+    expect($compiled[0][0])->toBe('simple-variable');
+    expect($compiled[0][1])->toBe(SimpleVariable::class);
     expect($compiled[0][2])->toBe(['color' => 'blue']);
 });
 
 it('returns called components', function () {
-    $compiled = $this->compiler->compile('<x-background color="blue">Hello</x-background>');
+    $compiled = $this->compiler->compile('<x-simple-variable color="blue">Hello</x-simple-variable>');
     expect($compiled)->toHaveCount(1);
-    expect($compiled[0][0])->toBe('background');
-    expect($compiled[0][1])->toBe(Background::class);
+    expect($compiled[0][0])->toBe('simple-variable');
+    expect($compiled[0][1])->toBe(SimpleVariable::class);
     expect($compiled[0][2])->toBe(['color' => 'blue']);
 });

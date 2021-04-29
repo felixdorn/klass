@@ -9,16 +9,16 @@ it('can visit a node', function () {
     $calls = [
         new Call(
             new Declaration(
-                'background',
-                'Background',
+                'simple-variable',
+                'SimpleVariable',
                 '',
                 []
             ),
         ),
         new Call(
             new Declaration(
-                'background',
-                'Background',
+                'simple-variable',
+                'SimpleVariable',
                 '',
                 []
             )
