@@ -2,7 +2,11 @@
 
 namespace Felix\Klass;
 
+use Closure;
+use Felix\Klass\Support\MalleableSlots;
+use Illuminate\Support\HtmlString;
 use Illuminate\View\Component;
+use Illuminate\View\ComponentAttributeBag;
 use Illuminate\View\View;
 use ReflectionClass;
 
@@ -58,7 +62,7 @@ class DeclarationFactory
     protected static function getComponentContents(string $name, string $class): string
     {
         if (str_contains($name, '-')) {
-            return static::getComponentContentsWithReflection($class);
+            return static::getComponentContentsWithReflection($name, $class);
         }
         $name = sprintf(
             '%s%s.blade.php',
@@ -70,11 +74,11 @@ class DeclarationFactory
             return file_get_contents($name) ?: '';
         }
 
-        return static::getComponentContentsWithReflection($class);
+        return static::getComponentContentsWithReflection($name, $class);
     }
 
     /** @param class-string $class */
-    protected static function getComponentContentsWithReflection(string $class): string
+    protected static function getComponentContentsWithReflection(string $name, string $class): string
     {
         /** @var ReflectionClass<Component> $ref */
         $ref       = new ReflectionClass($class);
@@ -85,12 +89,25 @@ class DeclarationFactory
             return $component;
         }
 
-        // Support for closures in render() should go there
-        if (!$component instanceof View) {
-            // TODO: Do some smart stuff here maybe
-            return '';
+        if ($component instanceof View) {
+            return file_get_contents($component->getPath()) ?: '';
         }
 
-        return file_get_contents($component->getPath()) ?: '';
+        if ($component instanceof Closure) {
+            $componentData = [
+                'componentName'   => $name,
+                'attributes'      => new ComponentAttributeBag(),
+                'slot'            => new HtmlString(),
+                '__laravel_slots' => new MalleableSlots(),
+            ];
+
+            $called = $component($componentData);
+
+            if ($called instanceof View) {
+                return file_get_contents($called->getPath()) ?: '';
+            }
+        }
+
+        return '';
     }
 }
