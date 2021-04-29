@@ -2,8 +2,10 @@
 
 namespace Felix\Klass;
 
+use Felix\Klass\Reflection\Container;
 use ReflectionClass;
 use ReflectionProperty;
+use Throwable;
 
 class AttributesResolver
 {
@@ -98,20 +100,20 @@ class AttributesResolver
         return true;
     }
 
-    private function handlePropertiesDefinedInConstructor()
+    private function handlePropertiesDefinedInConstructor(): void
     {
-//                try {
-//                    $built = Container::resolve($component->getClass(), $attributes->toArray());
-//                    $reflection = new ReflectionClass($built);
-//
-//                    return $attributes->mapWithKeys(function ($value, $key) use ($built, $reflection) {
-//                        if (!$reflection->hasProperty($key)) {
-//                            return [$key => $value];
-//                        }
-//if (!$this->propertyHasScalarType($reflection->getProperty($key))) {
-//    return [$key => $value];
-//}
-//
-//return [$key => $reflection->getProperty($key)->getValue($built)];
+        try {
+            $resolved   = Container::resolve($this->reflection->getName(), $this->attributes);
+            $properties = get_object_vars($resolved);
+
+            $this->attributes = collect($this->attributes)->mapWithKeys(function ($value, $key) use ($properties, $resolved) {
+                if (!property_exists($resolved, $key)) {
+                    return [$key => $value];
+                }
+
+                return [$key => $properties[$key]];
+            })->toArray();
+        } catch (Throwable $e) {
+        }
     }
 }

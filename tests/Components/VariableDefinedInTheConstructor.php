@@ -8,9 +8,9 @@ class VariableDefinedInTheConstructor extends Component
 {
     public string $size;
 
-    public function __construct(string $size = '2xl')
+    public function __construct()
     {
-        $this->size = $size;
+        $this->size = 'lg';
     }
 
     public function render()
