@@ -33,6 +33,16 @@ class Klass
         return new Calls(Arr::flatten($calls));
     }
 
+    protected function allBladeViews(string $directory): array
+    {
+        return iterator_to_array(
+            (new Finder())
+                ->files()
+                ->name('*.blade.php')
+                ->in($directory)
+        );
+    }
+
     public function extractCalls(string $code): array
     {
         $componentCompiler = new CallsCompiler();
@@ -46,15 +56,5 @@ class Klass
                 $attributes
             );
         }, $components);
-    }
-
-    protected function allBladeViews(string $directory): array
-    {
-        return iterator_to_array(
-            (new Finder())
-                ->files()
-                ->name('*.blade.php')
-                ->in($directory)
-        );
     }
 }

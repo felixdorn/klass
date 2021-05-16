@@ -16,5 +16,7 @@ expect()->extend('toHaveExtractedClasses', function (array $classes) {
     $calls->addVisitor(new CallableVisitor([$command, 'visit']));
     $calls->visit();
 
-    expect($command->getClasses())->toBe($classes);
+    foreach ($classes as $class) {
+        expect($command->getClasses())->toContain($class);
+    }
 });
