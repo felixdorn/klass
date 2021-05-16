@@ -6,12 +6,11 @@ use Felix\Klass\Call;
 
 class CallableVisitor implements Visitor
 {
-    /** @var callable */
-    protected $visitor;
-
-    public function __construct(callable $visitor)
+    /**
+     * @param callable $visitor
+     */
+    public function __construct(public $visitor)
     {
-        $this->visitor = $visitor;
     }
 
     public function visit(Call $call): void

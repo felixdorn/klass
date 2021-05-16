@@ -14,7 +14,7 @@ class ShouldBeResolved
     public ?string $faz;
     public Factory $factory;
 
-    public function __construct(string $foo, string $bar = 'baz', ?string $faz, Factory $factory)
+    public function __construct(string $foo, ?string $faz, Factory $factory, string $bar = 'baz')
     {
         $this->foo     = $foo;
         $this->bar     = $bar;

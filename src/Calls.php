@@ -6,16 +6,16 @@ use Felix\Klass\Visitors\Visitor;
 
 class Calls
 {
-    /** @var Call[] */
-    protected array $calls;
     /** @var array<int, array<int, string>> */
     protected array $visited = [];
     /** @var Visitor[] */
     protected array $visitors = [];
 
-    public function __construct(array $calls = [])
+    /**
+     * @param Call[] $calls
+     */
+    public function __construct(public array $calls = [])
     {
-        $this->calls = $calls;
     }
 
     public function addVisitor(Visitor $visitor): self

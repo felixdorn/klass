@@ -9,11 +9,11 @@
         }
     ],
     "require": {
-        "php": "^7.4"
+        "php": "^8.0"
     },
     "require-dev": {
         "felixdorn/laravel-render-blade-string": "dev-master",
-        "friendsofphp/php-cs-fixer": "^2.16.4",
+        "friendsofphp/php-cs-fixer": "^3",
         "orchestra/testbench": "^6.16",
         "pestphp/pest": "^0.3.8",
         "phpstan/phpstan": "^0.12.48",

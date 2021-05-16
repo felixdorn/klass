@@ -4,17 +4,12 @@ namespace Felix\Klass;
 
 class Declaration
 {
-    protected string $name;
-    protected string $class;
-    protected array $attributes;
-    protected string $contents;
-
-    public function __construct(string $name, string $class, string $contents, array $attributes = [])
-    {
-        $this->name       = $name;
-        $this->class      = $class;
-        $this->attributes = $attributes;
-        $this->contents   = $contents;
+    public function __construct(
+        protected string $name,
+        protected string $class,
+        protected string $contents,
+        protected array $attributes = []
+    ) {
     }
 
     public function getName(): string

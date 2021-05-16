@@ -41,7 +41,7 @@ class KlassExtractCommand extends Command implements Visitor
         foreach ($attributes as $attribute => $value) {
             try {
                 $evaluated = eval("return $value");
-            } catch (Throwable $exception) {
+            } catch (Throwable) {
             }
 
             $evaluated ??= $value;

@@ -3,6 +3,7 @@
 namespace Felix\Klass\Reflection;
 
 use ReflectionClass;
+use ReflectionNamedType;
 use RuntimeException;
 
 class Container
@@ -37,8 +38,8 @@ class Container
                 continue;
             }
 
-            if ($parameter->getClass() !== null) {
-                $resolved[] = app()->make($parameter->getClass()->getName());
+            if ($parameter->getType() instanceof ReflectionNamedType && !$parameter->getType()->isBuiltin()) {
+                $resolved[] = app()->make($parameter->getType()->getName());
                 continue;
             }
 

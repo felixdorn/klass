@@ -9,17 +9,14 @@ use Throwable;
 
 class AttributesResolver
 {
-    /** @var class-string */
-    protected string $class;
     protected ReflectionClass $reflection;
     protected array $attributes = [];
 
     /**
      * @param class-string $class
      */
-    public function __construct(string $class)
+    public function __construct(public string $class)
     {
-        $this->class      = $class;
         $this->reflection = new ReflectionClass($this->class);
     }
 
@@ -113,7 +110,7 @@ class AttributesResolver
 
                 return [$key => $properties[$key]];
             })->toArray();
-        } catch (Throwable $e) {
+        } catch (Throwable) {
         }
     }
 }
