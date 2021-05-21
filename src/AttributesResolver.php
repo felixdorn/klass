@@ -2,37 +2,41 @@
 
 namespace Felix\Klass;
 
-use Felix\Klass\Component\ComponentDeclaration;
+use Felix\Klass\Reflection\Container;
 use ReflectionClass;
 use ReflectionProperty;
+use Throwable;
 
-class Finder
+class AttributesResolver
 {
-    protected string $component;
-    /** @var class-string */
-    protected string $class;
     protected ReflectionClass $reflection;
     protected array $attributes = [];
-    protected array $defaults   = [];
 
     /**
      * @param class-string $class
      */
-    public function __construct(string $component, string $class)
+    public function __construct(public string $class)
     {
-        $this->component  = $component;
-        $this->class      = $class;
         $this->reflection = new ReflectionClass($this->class);
     }
 
-    public function resolve(): ComponentDeclaration
+    /**
+     * @param class-string $class
+     */
+    public static function getAttributes(string $class): array
+    {
+        return (new self($class))->resolve();
+    }
+
+    protected function resolve(): array
     {
         $this->handleConstructorParametersWithReflection();
         $this->handleComponentProperties();
+        $this->handlePropertiesDefinedInConstructor();
 
-        $this->defaults = array_filter($this->defaults, 'is_scalar');
-
-        return new ComponentDeclaration($this->component, $this->class, array_unique($this->attributes), $this->defaults);
+        return array_filter($this->attributes, function ($attribute) {
+            return is_scalar($attribute) || is_null($attribute);
+        });
     }
 
     protected function handleConstructorParametersWithReflection(): void
@@ -44,14 +48,10 @@ class Finder
         $parameters = $this->reflection->getConstructor()->getParameters();
 
         foreach ($parameters as $parameter) {
-            $this->attributes[] = $parameter->getName();
+            $this->attributes[$parameter->getName()] = null;
 
-            if (!$parameter->isDefaultValueAvailable()) {
-                continue;
-            }
-
-            if ($parameter->getDefaultValue() !== null) {
-                $this->defaults[$parameter->getName()] = $parameter->getDefaultValue();
+            if ($parameter->isDefaultValueAvailable()) {
+                $this->attributes[$parameter->getName()] = $parameter->getDefaultValue();
             }
         }
     }
@@ -60,11 +60,11 @@ class Finder
     {
         $properties = collect($this->reflection->getProperties())->mapWithKeys(fn (ReflectionProperty $property) => [$property->getName() => $property]);
         $properties->each(function (ReflectionProperty $property) {
-            if (!$this->isPropertyAttribute($property)) {
+            if (!$this->isPropertyAttribute($property) || array_key_exists($property->getName(), $this->attributes)) {
                 return;
             }
 
-            $this->attributes[] = $property->getName();
+            $this->attributes[$property->getName()] = null;
         });
 
         foreach ($this->reflection->getDefaultProperties() as $name => $default) {
@@ -74,7 +74,9 @@ class Finder
                 continue;
             }
 
-            $this->defaults[$name] = $default;
+            if (!array_key_exists($name, $this->attributes) || $this->attributes[$name] === null) {
+                $this->attributes[$name] = $default;
+            }
         }
     }
 
@@ -93,5 +95,22 @@ class Finder
         }
 
         return true;
+    }
+
+    private function handlePropertiesDefinedInConstructor(): void
+    {
+        try {
+            $resolved   = Container::resolve($this->reflection->getName(), $this->attributes);
+            $properties = get_object_vars($resolved);
+
+            $this->attributes = collect($this->attributes)->mapWithKeys(function ($value, $key) use ($properties, $resolved) {
+                if (!property_exists($resolved, $key)) {
+                    return [$key => $value];
+                }
+
+                return [$key => $properties[$key]];
+            })->toArray();
+        } catch (Throwable) {
+        }
     }
 }

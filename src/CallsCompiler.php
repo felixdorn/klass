@@ -1,10 +1,10 @@
 <?php
 
-namespace Felix\Klass\Component;
+namespace Felix\Klass;
 
 use Illuminate\Support\Str;
 
-class ComponentCompiler
+class CallsCompiler
 {
     public function compile(string $code): array
     {
@@ -21,7 +21,7 @@ class ComponentCompiler
 
         $components = [];
 
-        foreach ($matches[1] as $k => $componentName) {
+        foreach ($matches['name'] as $k => $componentName) {
             $compiledString = app('blade.compiler')->compileString($code);
 
             if (array_key_exists($componentName, $classComponentAliases)) {
@@ -37,7 +37,7 @@ class ComponentCompiler
                 $componentClass = $classMatch[1];
             }
 
-            $components[] = [$componentName, $componentClass, $this->compileAttributeString($matches[2][$k])];
+            $components[] = [$componentName, $componentClass, $this->compileAttributeString($matches['attributes'][$k])];
         }
 
         return $components;
@@ -78,7 +78,10 @@ class ComponentCompiler
             \/>
         /x", $code, $matches);
 
-        return $matches;
+        return [
+            'name'       => $matches['name'],
+            'attributes' => $matches['attributes'],
+        ];
     }
 
     protected function compileOpeningTags(string $code): array
@@ -116,7 +119,10 @@ class ComponentCompiler
             >
         /x", $code, $matches);
 
-        return $matches;
+        return [
+            'name'       => $matches['name'],
+            'attributes' => $matches['attributes'],
+        ];
     }
 
     protected function compileAttributeString(string $attributes): array
@@ -144,7 +150,7 @@ class ComponentCompiler
     {
         $value = trim($value);
 
-        if (blank($value)) {
+        if (empty($value)) {
             $value = 'true';
         }
 

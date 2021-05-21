@@ -1,3 +1,4 @@
+
 # Klass for Laravel
 
 **A stable version that will fix the limitations stated below is in work [here](https://github.com/felixdorn/klass/tree/v1)**
@@ -113,23 +114,8 @@ class Icon extends Component {
 So if you type an attribute as an abstract class like `Illuminate\Database\Eloquent\Model`. It would simply ignore use
 only the properties and constructor parameters to resolve the attributes. .
 
-Workaround: The only workaround is to allow the type to be nullable to make it so Klass analyse properties defined more dynamically like `$type` in the example above.
-
-### Returning a Closure in `render()`
-
-```php
-class Button extends Component {
-    public function render() {
-        return function ($componentData) {
-            return view('components.button', $componentData);
-        };
-    }
-}
-```
-
-Returning a closure in `render()` makes it impossible for Klass to extract dynamic classes in the component.
-
-Workaround: None.
+Workaround: The only workaround is to allow the type to be nullable to make it so Klass analyse properties defined more
+dynamically like `$type` in the example above.
 
 ## Tailwind & JIT compilation
 
@@ -145,28 +131,6 @@ have yet to figure out how to do that in a smart way.
 Blade components used in a Livewire component are analyzed. However, we do not support Livewire components in itself. I
 have no plans to support it before traditional Blade components edge cases are resolved. I'd merge a PR adding support
 for it, if you feel like contributing.
-
-## API
-
-This API has yet to be implemented.
-
-```php
-$extracted = Klass::extract(Component::class);
-$extracted->getCalls();
-$extracted->hasCalls();
-
-$component = $extracted->getComponent();
-$component->getName();
-$component->getClass();
-$component->getAttributes();
-$component->getDefaults();
-$component->getContent();
-
-Klass::listen('event', function () {});
-```
-
-So we could add more commands such as `klass:extract` without copy pasting things around and external libraries could
-build cool stuff on top of the API.
 
 ## Testing
 

@@ -3,52 +3,49 @@
 namespace Felix\Klass\Reflection;
 
 use ReflectionClass;
+use ReflectionNamedType;
 use RuntimeException;
 
 class Container
 {
     /**
      * @param class-string $class
-     *
-     * @return mixed|object
      */
-    public static function resolve(string $class, array $with = [])
+    public static function resolve(string $class, array $attributes = []): object
     {
         $reflection = new ReflectionClass($class);
 
-        if ($reflection->getConstructor() === null || $reflection->getConstructor()->getNumberOfRequiredParameters() === 0) {
+        if ($reflection->getConstructor() === null) {
             return new $class();
         }
 
-        $parameters         = $reflection->getConstructor()->getParameters();
-        $resolvedParameters = [];
+        $parameters = $reflection->getConstructor()->getParameters();
+        $resolved   = [];
 
         foreach ($parameters as $parameter) {
-            // If it's a class (probably a model passed as an argument)
-            // $with would contain the variable referencing this object like "$user"
-            // So we only resolve the parameter using $with if the type is not an object
-            if (!$parameter->getClass() && array_key_exists($parameter->getName(), $with)) {
-                $resolvedParameters[] = $with[$parameter->getName()];
+            if (array_key_exists($parameter->getName(), $attributes)) {
+                $resolved[] = $attributes[$parameter->getName()];
                 continue;
             }
 
             if ($parameter->isDefaultValueAvailable()) {
-                $resolvedParameters[] = $parameter->getDefaultValue();
+                $resolved[] = $parameter->getDefaultValue();
                 continue;
             }
 
             if ($parameter->allowsNull()) {
-                $resolvedParameters[] = null;
+                $resolved[] = null;
                 continue;
             }
 
-            if ($parameter->getClass() === null) {
-                throw new RuntimeException(sprintf('Unresolvable parameter %s in %s', $parameter->getName(), $class));
+            if ($parameter->getType() instanceof ReflectionNamedType && !$parameter->getType()->isBuiltin()) {
+                $resolved[] = app()->make($parameter->getType()->getName());
+                continue;
             }
 
-            $resolvedParameters[] = app($parameter->getClass()->getName());
+            throw new RuntimeException("Unresolvable parameter [{$parameter->getName()}] in [{$parameter->getDeclaringClass()}]");
         }
 
-        return $reflection->newInstanceArgs($resolvedParameters);
+        return $reflection->newInstanceArgs($resolved);
     }
 }
