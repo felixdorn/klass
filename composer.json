@@ -1,5 +1,5 @@
 {
-    "name": "felixdorn/x-klass",
+    "name": "felixdorn/klass",
     "description": "Extract dynamic classes in your Blade components",
     "license": "MIT",
     "authors": [
