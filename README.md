@@ -1,11 +1,9 @@
 
 # Klass for Laravel
 
-**A stable version that will fix the limitations stated below is in work [here](https://github.com/felixdorn/klass/tree/v1)**
-
 Klass extracts your dynamic classes in your Blade components to a file that PurgeCSS can process.
 
-The plugin for Laravel Mix can be found [here](). (no yet released, still WIP)
+<!-- The plugin for Laravel Mix can be found [here](). (no yet released, still WIP) -->
 
 [![Tests](https://github.com/felixdorn/klass/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/felixdorn/klass/actions/workflows/tests.yml)
 [![Formats](https://github.com/felixdorn/klass/actions/workflows/formats.yml/badge.svg?branch=master)](https://github.com/felixdorn/klass/actions/workflows/formats.yml)
@@ -15,7 +13,7 @@ The plugin for Laravel Mix can be found [here](). (no yet released, still WIP)
 
 ## Installation
 
-> Requires [PHP7.4.0+](https://php.net/releases)
+> Requires [PHP 8.0.0+](https://php.net/releases)
 
 You can install the package via composer:
 
@@ -64,8 +62,6 @@ bg-red-500 bg-blue-500
 
 You can now add that file to PurgeCSS, or a similar tool to include those classes in your final CSS build.
 
-If you use the [Laravel Mix plugin]() (still WIP, not released yet), the last two steps are done automatically.
-
 ## Configuration
 
 You can publish the config file with:
@@ -90,32 +86,6 @@ return [
     'output' => base_path('storage/framework/extracted-classes.txt'),
 ];
 ```
-
-## Known Limitations
-
-There might be other limitations that I didn't think of please PR them here, so I can work on them at some point.
-
-### Parameter typed with an abstract class, or an interface not bound to an implementation
-
-TLDR; This means that you can't type an attribute as `Illuminate\Database\Eloquent\Model` or any unbound abstract class
-/ interface.
-
-To resolve the type property in the component below, Klass needs to instantiate it.
-
-```php
-class Icon extends Component {
-    public string $type;
-    public function __construct(bool $solid = true) {
-        $this->type = $solid ? 's' : 'o';
-    }
-}
-```
-
-So if you type an attribute as an abstract class like `Illuminate\Database\Eloquent\Model`. It would simply ignore use
-only the properties and constructor parameters to resolve the attributes. .
-
-Workaround: The only workaround is to allow the type to be nullable to make it so Klass analyse properties defined more
-dynamically like `$type` in the example above.
 
 ## Tailwind & JIT compilation
 
